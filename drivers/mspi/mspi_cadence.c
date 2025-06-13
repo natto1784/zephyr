@@ -28,6 +28,7 @@ struct mspi_cadence_config {
 	DEVICE_MMIO_ROM;
 	struct mspi_cfg mspi_config;
 	const struct pinctrl_dev_config *pinctrl;
+	const uint32_t data_reg;
 	const uint32_t fifo_addr;
 	const uint32_t sram_allocated_for_read;
 
@@ -274,8 +275,9 @@ static int mspi_cadence_init(const struct device *dev)
 	MSPI_CADENCE_REG_WRITE(timing_config->after, DEV_DELAY, D_AFTER, base_addr);
 	MSPI_CADENCE_REG_WRITE(timing_config->init, DEV_DELAY, D_INIT, base_addr);
 
-	/* set trigger reg address and range to 0 */
-	MSPI_CADENCE_REG_WRITE(0, IND_AHB_ADDR_TRIGGER, ADDR, base_addr);
+	/* set trigger reg address to fifo offset and range to 0 */
+	MSPI_CADENCE_REG_WRITE(config->fifo_addr - config->data_reg, IND_AHB_ADDR_TRIGGER, ADDR,
+			       base_addr);
 	MSPI_CADENCE_REG_WRITE(0, INDIRECT_TRIGGER_ADDR_RANGE, IND_RANGE_WIDTH, base_addr);
 
 	/* disable loop-back via DQS */
@@ -888,7 +890,9 @@ static DEVICE_API(mspi, mspi_cadence_driver_api) = {
 		DEVICE_MMIO_ROM_INIT(DT_DRV_INST(n)),                                              \
 		.pinctrl = PINCTRL_DT_INST_DEV_CONFIG_GET(n),                                      \
 		.mspi_config = MSPI_CONFIG(n),                                                     \
-		.fifo_addr = DT_REG_ADDR_BY_IDX(DT_DRV_INST(n), 1),                                \
+		.data_reg = DT_REG_ADDR_BY_IDX(DT_DRV_INST(n), 1),                                 \
+		.fifo_addr = DT_INST_REG_ADDR_BY_IDX(n, 1) +                                       \
+			     DT_INST_PROP_OR(n, indirect_trigger_offset, 0),                       \
 		.sram_allocated_for_read = DT_PROP(DT_DRV_INST(n), sram_allocated_for_read),       \
 		.initial_timing_cfg = {                                                            \
 			.nss = DT_PROP_OR(DT_DRV_INST(n), init_nss_delay,                          \
