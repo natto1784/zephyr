@@ -7,7 +7,7 @@ compatible: "infineon,s25h-flash"
 
 on-bus: mspi
 
-include: ["soc-nv-flash.yaml", "pinctrl-device.yaml", "mspi-device.yaml"]
+include: ["soc-nv-flash.yaml", "pinctrl-device.yaml", "mspi-device.yaml", "jedec,jesd216.yaml"]
 
 properties:
   reg:

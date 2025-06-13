@@ -8,11 +8,14 @@ tests:
       - mspi
       - flash
     filter: dt_compat_enabled("zephyr,mspi-emul-flash") or
-            dt_compat_enabled("mspi-atxp032")
+            dt_compat_enabled("mspi-atxp032") or
+            dt_compat_enabled("ti,k3-mspi-controller")
     harness: ztest
     platform_allow:
       - native_sim
       - apollo3p_evb
+      - am243x_evm/am2434/r5f0_0
     integration_platforms:
       - native_sim
       - apollo3p_evb
+      - am243x_evm/am2434/r5f0_0

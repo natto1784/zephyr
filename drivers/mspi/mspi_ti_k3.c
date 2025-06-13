@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+#include "zephyr/sys/printk.h"
 #define DT_DRV_COMPAT ti_k3_mspi_controller
 
 #include "mspi_ti_k3.h"
@@ -28,9 +29,9 @@ struct mspi_ti_k3_config {
 	DEVICE_MMIO_ROM;
 	struct mspi_cfg mspi_config;
 	const struct pinctrl_dev_config *pinctrl;
+	const uint32_t data_reg;
 	const uint32_t fifo_addr;
 	const uint32_t sram_allocated_for_read;
-
 	const struct mspi_ti_k3_timing_cfg initial_timing_cfg;
 };
 
@@ -104,6 +105,11 @@ int mspi_ti_k3_wait_for_idle(const struct device *controller)
 	return 0;
 }
 
+static ALWAYS_INLINE bool mspi_ti_k3_is_dual_byte_cmd(uint32_t base_addr)
+{
+	return MSPI_TI_K3_REG_READ_MASKED(CONFIG, DUAL_BYTE_OPCODE_EN, base_addr);
+}
+
 /**
  * Check whether a single request package is requesting something that the driver
  * doesn't implement / the hardware doesn't support
@@ -124,10 +130,6 @@ static int mspi_ti_k3_check_transfer_package(const struct mspi_xfer *request, ui
 		LOG_ERR("Commands over 2 byte long aren't supported");
 		return -ENOTSUP;
 	}
-	if (packet->cmd >> 8) {
-		LOG_ERR("Support for dual byte opcodes hasn't been implemented");
-		return -ENOSYS;
-	}
 	if (packet->num_bytes) {
 		__ASSERT(packet->data_buf != NULL,
 			 "Request gave a NULL buffer when bytes should be transfererd");
@@ -145,13 +147,10 @@ static int mspi_ti_k3_check_transfer_request(const struct mspi_xfer *request)
 		return -ENOSYS;
 	}
 
-	if (request->cmd_length == 2) {
-		LOG_ERR("Dual byte opcode is not implemented");
-		return -ENOSYS;
-	} else if (request->cmd_length > 2) {
+	if (request->cmd_length > 2) {
 		LOG_ERR("Cmds over 2 bytes long aren't supported");
 		return -ENOTSUP;
-	} else if (request->cmd_length != 1) {
+	} else if (request->cmd_length == 0) {
 		LOG_ERR("Can't handle transfer without cmd");
 		return -ENOSYS;
 	}
@@ -274,8 +273,9 @@ static int mspi_ti_k3_init(const struct device *dev)
 	MSPI_TI_K3_REG_WRITE(timing_config->after, DEV_DELAY, D_AFTER, base_addr);
 	MSPI_TI_K3_REG_WRITE(timing_config->init, DEV_DELAY, D_INIT, base_addr);
 
-	/* set trigger reg address and range to 0 */
-	MSPI_TI_K3_REG_WRITE(0, IND_AHB_ADDR_TRIGGER, ADDR, base_addr);
+	/* set trigger reg address to fifo offset and range to 0 */
+	MSPI_TI_K3_REG_WRITE(config->fifo_addr - config->data_reg, IND_AHB_ADDR_TRIGGER, ADDR,
+			     base_addr);
 	MSPI_TI_K3_REG_WRITE(0, INDIRECT_TRIGGER_ADDR_RANGE, IND_RANGE_WIDTH, base_addr);
 
 	/* disable loop-back via DQS */
@@ -307,7 +307,7 @@ static int mspi_ti_k3_init(const struct device *dev)
 
 	/* re-enable OSPI controller */
 	MSPI_TI_K3_REG_WRITE(1, CONFIG, ENABLE_SPI, base_addr);
-
+	printk("init mspi\n");
 	return 0;
 }
 
@@ -318,7 +318,7 @@ static int mspi_ti_k3_small_transfer(const struct device *controller, const stru
 	const struct mspi_xfer_packet *packet = &req->packets[index];
 	uint32_t dummy_cycles = 0;
 
-	/* reset previous command configuration completely */
+	/* reset command configuration completely */
 	sys_write32(0, base_address + TI_K3_OSPI_FLASH_CMD_CTRL_REG);
 
 	if (packet->dir == MSPI_RX) {
@@ -348,7 +348,13 @@ static int mspi_ti_k3_small_transfer(const struct device *controller, const stru
 		dummy_cycles = req->tx_dummy;
 	}
 
-	MSPI_TI_K3_REG_WRITE(packet->cmd, FLASH_CMD_CTRL, CMD_OPCODE, base_address);
+	if (mspi_ti_k3_is_dual_byte_cmd(base_address)) {
+		MSPI_TI_K3_REG_WRITE(packet->cmd >> 8, FLASH_CMD_CTRL, CMD_OPCODE, base_address);
+		MSPI_TI_K3_REG_WRITE(packet->cmd & 0xFF, OPCODE_EXT_LOWER, EXT_STIG_OPCODE,
+				     base_address);
+	} else {
+		MSPI_TI_K3_REG_WRITE(packet->cmd, FLASH_CMD_CTRL, CMD_OPCODE, base_address);
+	}
 	MSPI_TI_K3_REG_WRITE(dummy_cycles, FLASH_CMD_CTRL, NUM_DUMMY_CYCLES, base_address);
 
 	if (req->addr_length) {
@@ -356,6 +362,7 @@ static int mspi_ti_k3_small_transfer(const struct device *controller, const stru
 		MSPI_TI_K3_REG_WRITE(req->addr_length - 1, FLASH_CMD_CTRL, NUM_ADDR_BYTES,
 				     base_address);
 		MSPI_TI_K3_REG_WRITE(packet->address, FLASH_CMD_ADDR, ADDR, base_address);
+		printk("ts dual %x %x\n", req->addr_length, packet->address);
 	}
 
 	/* start transaction */
@@ -385,6 +392,9 @@ static int mspi_ti_k3_small_transfer(const struct device *controller, const stru
 		memcpy(&packet->data_buf[0], &lower, MIN(packet->num_bytes, 4));
 	}
 
+	/* reset command configuration completely */
+	sys_write32(0, base_address + TI_K3_OSPI_FLASH_CMD_CTRL_REG);
+
 	return 0;
 }
 
@@ -395,12 +405,24 @@ static int mspi_ti_k3_indirect_read(const struct device *controller, const struc
 	const struct mspi_ti_k3_config *config = controller->config;
 	const struct mspi_xfer_packet *packet = &req->packets[index];
 
-	MSPI_TI_K3_REG_WRITE(packet->cmd, DEV_INSTR_RD_CONFIG, RD_OPCODE_NON_XIP, base_address);
-	MSPI_TI_K3_REG_WRITE(packet->address, INDIRECT_READ_XFER_START, ADDR, base_address);
-	MSPI_TI_K3_REG_WRITE(packet->num_bytes, INDIRECT_READ_XFER_NUM_BYTES, VALUE, base_address);
-	MSPI_TI_K3_REG_WRITE(req->addr_length - 1, DEV_SIZE_CONFIG, NUM_ADDR_BYTES, base_address);
+	if (mspi_ti_k3_is_dual_byte_cmd(base_address)) {
+		MSPI_TI_K3_REG_WRITE(packet->cmd >> 8, DEV_INSTR_RD_CONFIG, RD_OPCODE_NON_XIP,
+				     base_address);
+		MSPI_TI_K3_REG_WRITE(packet->cmd & 0xFF, OPCODE_EXT_LOWER, EXT_READ_OPCODE,
+				     base_address);
+	} else {
+		MSPI_TI_K3_REG_WRITE(packet->cmd, DEV_INSTR_RD_CONFIG, RD_OPCODE_NON_XIP,
+				     base_address);
+	}
+	if (req->addr_length) {
+		MSPI_TI_K3_REG_WRITE(req->addr_length - 1, DEV_SIZE_CONFIG, NUM_ADDR_BYTES,
+				     base_address);
+		MSPI_TI_K3_REG_WRITE(packet->address, INDIRECT_READ_XFER_START, ADDR, base_address);
+	} else {
+		MSPI_TI_K3_REG_WRITE(0, DEV_SIZE_CONFIG, NUM_ADDR_BYTES, base_address);
+	}
 	MSPI_TI_K3_REG_WRITE(req->rx_dummy, DEV_INSTR_RD_CONFIG, DUMMY_RD_CLK_CYCLES, base_address);
-
+	MSPI_TI_K3_REG_WRITE(packet->num_bytes, INDIRECT_READ_XFER_NUM_BYTES, VALUE, base_address);
 	/* Start transfer */
 	MSPI_TI_K3_REG_WRITE(1, INDIRECT_READ_XFER_CTRL, START, base_address);
 
@@ -454,12 +476,28 @@ static int mspi_ti_k3_indirect_write(const struct device *controller, const stru
 	const struct mspi_ti_k3_config *config = controller->config;
 	const struct mspi_xfer_packet *packet = &req->packets[index];
 
-	MSPI_TI_K3_REG_WRITE(packet->cmd, DEV_INSTR_WR_CONFIG, WR_OPCODE_NON_XIP, base_address);
+	if (mspi_ti_k3_is_dual_byte_cmd(base_address)) {
+		MSPI_TI_K3_REG_WRITE(packet->cmd >> 8, DEV_INSTR_WR_CONFIG, WR_OPCODE_NON_XIP,
+				     base_address);
+		MSPI_TI_K3_REG_WRITE(packet->cmd & 0xFF, OPCODE_EXT_LOWER, EXT_WRITE_OPCODE,
+				     base_address);
+	} else {
+		MSPI_TI_K3_REG_WRITE(packet->cmd, DEV_INSTR_WR_CONFIG, WR_OPCODE_NON_XIP,
+				     base_address);
+	}
+	if (req->addr_length) {
+		MSPI_TI_K3_REG_WRITE(req->addr_length - 1, DEV_SIZE_CONFIG, NUM_ADDR_BYTES,
+				     base_address);
+		MSPI_TI_K3_REG_WRITE(packet->address, INDIRECT_WRITE_XFER_START, ADDR,
+				     base_address);
+	} else {
+		MSPI_TI_K3_REG_WRITE(0, DEV_SIZE_CONFIG, NUM_ADDR_BYTES, base_address);
+	}
+
 	MSPI_TI_K3_REG_WRITE(req->tx_dummy, DEV_INSTR_WR_CONFIG, DUMMY_WR_CLK_CYCLES, base_address);
-	MSPI_TI_K3_REG_WRITE(req->addr_length - 1, DEV_SIZE_CONFIG, NUM_ADDR_BYTES, base_address);
-	MSPI_TI_K3_REG_WRITE(packet->address, INDIRECT_WRITE_XFER_START, ADDR, base_address);
 	MSPI_TI_K3_REG_WRITE(packet->num_bytes, INDIRECT_WRITE_XFER_NUM_BYTES, VALUE, base_address);
 
+	/* start transaction */
 	MSPI_TI_K3_REG_WRITE(1, INDIRECT_WRITE_XFER_CTRL, START, base_address);
 
 	uint32_t read_offset = 0;
@@ -508,6 +546,7 @@ timeout:
 static int mspi_ti_k3_transceive(const struct device *controller, const struct mspi_dev_id *dev_id,
 				 const struct mspi_xfer *req)
 {
+
 	uint64_t start_time = k_uptime_get();
 	struct mspi_ti_k3_data *data = controller->data;
 	int ret = 0;
@@ -650,7 +689,8 @@ int mspi_ti_k3_dev_config(const struct device *controller, const struct mspi_dev
 	ret = k_mutex_lock(&data->lock, K_MSEC(CONFIG_MSPI_COMPLETION_TIMEOUT_TOLERANCE));
 
 	if (ret < 0) {
-		LOG_ERR("Error waiting for MSPI controller lock for changing device config");
+		LOG_ERR("Error waiting for MSPI controller lock for changing device "
+			"config");
 		return ret;
 	}
 
@@ -659,7 +699,8 @@ int mspi_ti_k3_dev_config(const struct device *controller, const struct mspi_dev
 		return -ENOSYS;
 	}
 	if (param_mask & TI_K3_OSPI_IGNORED_DEV_CONFIG_PARAMS) {
-		LOG_WRN("Device configuration includes ignored parameters. These are taken from "
+		LOG_WRN("Device configuration includes ignored parameters. These are taken "
+			"from "
 			"the transceive request instead");
 	}
 
@@ -675,7 +716,8 @@ int mspi_ti_k3_dev_config(const struct device *controller, const struct mspi_dev
 
 	if (param_mask & MSPI_DEVICE_CONFIG_CE_POL) {
 		if (cfg->ce_polarity != MSPI_CE_ACTIVE_LOW) {
-			LOG_ERR("Non active low chip enable polarities haven't been implemented "
+			LOG_ERR("Non active low chip enable polarities haven't been "
+				"implemented "
 				"yet");
 			return -ENOSYS;
 		}
@@ -688,19 +730,34 @@ int mspi_ti_k3_dev_config(const struct device *controller, const struct mspi_dev
 		}
 	}
 
-	if (param_mask & MSPI_DEVICE_CONFIG_DATA_RATE) {
-		if (cfg->data_rate != MSPI_DATA_RATE_SINGLE) {
-			LOG_ERR("Only single data rate is supported for now");
-			return -ENOSYS;
-		}
-	}
-
 	/* Disable OSPI during configuration */
 	MSPI_TI_K3_REG_WRITE(0, CONFIG, ENABLE_SPI, base_addr);
 
 	ret = mspi_ti_k3_wait_for_idle(controller);
 	if (ret < 0) {
 		goto exit;
+	}
+
+	if (param_mask & MSPI_DEVICE_CONFIG_DATA_RATE) {
+		switch (cfg->data_rate) {
+		case MSPI_DATA_RATE_SINGLE:
+			/* disable DTR protocol */
+			MSPI_TI_K3_REG_WRITE(0, CONFIG, ENABLE_DTR_PROTOCOL, base_addr);
+			MSPI_TI_K3_REG_WRITE(0, DEV_INSTR_RD_CONFIG, DDR_EN, base_addr);
+			break;
+		case MSPI_DATA_RATE_DUAL:
+			/* enable DTR protocol */
+			MSPI_TI_K3_REG_WRITE(1, CONFIG, ENABLE_DTR_PROTOCOL, base_addr);
+			break;
+		case MSPI_DATA_RATE_S_D_D:
+			/* enable DDR */
+			MSPI_TI_K3_REG_WRITE(0, CONFIG, ENABLE_DTR_PROTOCOL, base_addr);
+			MSPI_TI_K3_REG_WRITE(1, DEV_INSTR_RD_CONFIG, DDR_EN, base_addr);
+			break;
+		default:
+			LOG_ERR("Configured data rate is not supported");
+			return -ENOSYS;
+		}
 	}
 
 	if (param_mask & MSPI_DEVICE_CONFIG_CE_NUM) {
@@ -754,6 +811,26 @@ int mspi_ti_k3_dev_config(const struct device *controller, const struct mspi_dev
 			goto exit;
 		}
 	}
+
+	if (cfg->cmd_length == 1) {
+		MSPI_TI_K3_REG_WRITE(0, CONFIG, DUAL_BYTE_OPCODE_EN, base_addr);
+	} else if (cfg->cmd_length == 2) {
+		switch (cfg->io_mode) {
+		case MSPI_IO_MODE_OCTAL:
+		case MSPI_IO_MODE_OCTAL_1_1_8:
+		case MSPI_IO_MODE_OCTAL_1_8_8:
+			MSPI_TI_K3_REG_WRITE(1, CONFIG, DUAL_BYTE_OPCODE_EN, base_addr);
+			break;
+		default:
+			LOG_ERR("Command length must be 1 byte for non octal modes");
+			ret = -ENOTSUP;
+			goto exit;
+		}
+	} else {
+		LOG_ERR("Invalid command length: %u", cfg->cmd_length);
+		ret = -ENOTSUP;
+		goto exit;
+	}
 exit:
 	/* Re-enable OSPI */
 	MSPI_TI_K3_REG_WRITE(1, CONFIG, ENABLE_SPI, base_addr);
@@ -797,6 +874,10 @@ int mspi_ti_k3_timing(const struct device *controller, const struct mspi_dev_id 
 		MSPI_TI_K3_REG_WRITE(timing->init, DEV_DELAY, D_INIT, base_addr);
 	}
 
+	if (param_mask & MSPI_TI_K3_TIMING_PARAM_RD_DELAY) {
+		MSPI_TI_K3_REG_WRITE(timing->rd_delay, RD_DATA_CAPTURE, DELAY, base_addr);
+	}
+
 	k_mutex_unlock(&data->lock);
 
 	return 0;
@@ -828,7 +909,9 @@ static DEVICE_API(mspi, mspi_ti_k3_driver_api) = {
 		DEVICE_MMIO_ROM_INIT(DT_DRV_INST(n)),                                              \
 		.pinctrl = PINCTRL_DT_INST_DEV_CONFIG_GET(n),                                      \
 		.mspi_config = MSPI_CONFIG(n),                                                     \
-		.fifo_addr = DT_REG_ADDR_BY_IDX(DT_DRV_INST(n), 1),                                \
+		.data_reg = DT_REG_ADDR_BY_IDX(DT_DRV_INST(n), 1),                                 \
+		.fifo_addr = DT_INST_REG_ADDR_BY_IDX(n, 1) +                                       \
+			     DT_INST_PROP_OR(n, indirect_trigger_offset, 0),                       \
 		.sram_allocated_for_read = DT_PROP(DT_DRV_INST(n), sram_allocated_for_read),       \
 		.initial_timing_cfg = {                                                            \
 			.nss = DT_PROP_OR(DT_DRV_INST(n), init_nss_delay,                          \

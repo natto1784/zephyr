@@ -56,6 +56,23 @@
 		interrupt-controller;
 		#interrupt-cells = <4>; /* {IRQ/FIQ, IRQ_NUM, IRQ_TYPE, IRQ_PRIO} */
 	};
+ /* flash_mpu@60000000 {
+  status = "okay";
+		device_type = "memory";
+		compatible = "zephyr,memory-region", "mmio-sram";
+		reg = <0x60000000 DT_SIZE_M(128)>;
+		zephyr,memory-region = "mpu";
+		zephyr,memory-attr = <( DT_MEM_ARM(ATTR_MPU_FLASH) )>;
+  }; */
+ospi0: ospi@fc40000 {
+	status = "okay";
+  compatible = "ti,k3-mspi-controller";
+	#address-cells = <1>;
+	#size-cells = <0>;
+      indirect-trigger-offset = <0x100000>;
+  		reg = <0x0fc40000 0x100 0x60000000 0x4>;
+		sram-allocated-for-read = <0x80>;
+};
 };
 
 &timer0 {

@@ -14,6 +14,12 @@ properties:
       Address and length of the MSPI configuration register and the indirect
       write FIFO location.
 
+  indirect-trigger-offset:
+    required: true
+    type: int
+    description: |
+      Amount of SRAM that is alloc
+
   sram-allocated-for-read:
     required: true
     type: int

@@ -29,6 +29,9 @@ struct mspi_ti_k3_timing_cfg {
 	 * transmitted
 	 */
 	uint8_t init;
+
+	/* amount of RCLK (ref clock) cycles to delay the read data capturing logic by */
+	uint8_t rd_delay;
 };
 
 /**
@@ -38,7 +41,8 @@ enum mspi_ti_k3_timing_param {
 	MSPI_TI_K3_TIMING_PARAM_NSS = BIT(0),
 	MSPI_TI_K3_TIMING_PARAM_BTWN = BIT(1),
 	MSPI_TI_K3_TIMING_PARAM_AFTER = BIT(2),
-	MSPI_TI_K3_TIMING_PARAM_INIT = BIT(3)
+	MSPI_TI_K3_TIMING_PARAM_INIT = BIT(3),
+	MSPI_TI_K3_TIMING_PARAM_RD_DELAY = BIT(4),
 };
 
 /* Not implemented mspi_dev_cfg bits */
