@@ -1,0 +1,32 @@
+config TI_SDHC
+	bool "SDHC driver"
+	select SDHC_SUPPORTS_NATIVE_MODE
+	select EVENTS
+	select REGULATOR
+	select GPIO
+	default y
+	depends on DT_HAS_TI_SDHC_ENABLED
+
+	help
+	  EMMC host controller interrupt mode support.
+
+if TI_SDHC
+config TI_SDHC_ENABLE_ADMA
+	bool "ADMA"
+	default y
+  select DCACHE
+	help
+	  Auto stop command mode support.
+
+config TI_SDHC_ENABLE_AUTO_STOP
+	bool "auto stop command mode"
+	default y
+	help
+	  Auto stop command mode support.
+
+config TI_SDHC_ADMA_DESC_LEN
+	int "descriptor length"
+	default 32
+	help
+	  Auto stop command mode support.
+endif
