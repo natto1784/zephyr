@@ -1,0 +1,9 @@
+# Copyright (c) 2025 Texas Instruments
+# SPDX-License-Identifier: Apache-2.0
+
+config TI_K3_MMR
+	bool "TI K3 MMR partition control driver"
+	default y
+	depends on DT_HAS_TI_K3_MMR_ENABLED
+	help
+	  This driver is used to lock/unlock MMR control partitions.
