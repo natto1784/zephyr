@@ -31,7 +31,7 @@
 		reg = <0x04a00000 0x200>;
 		power-domains = <&mcu_uart0_pd>;
 		clocks = <&k3_clks 149 0>;
-		clock-frequency = <DT_FREQ_M(48)>;
+			zephyr,pm-device-runtime-auto;
 		current-speed = <115200>;
 		reg-shift = <2>;
 		status = "disabled";

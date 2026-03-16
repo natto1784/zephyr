@@ -124,7 +124,6 @@
 		reg = <0x02800000 0x200>;
 		power-domains = <&uart0_pd>;
 		clocks = <&k3_clks 146 0>;
-		clock-frequency = <DT_FREQ_M(48)>;
 		reg-shift = <2>;
 		status = "disabled";
 	};

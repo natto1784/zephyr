@@ -172,6 +172,13 @@ enum pm_device_action {
 };
 
 /**
+ * clock_control_subsys_t is a type to identify a clock controller sub-system.
+ * Such data pointed is opaque and relevant only to the clock controller
+ * driver instance being used.
+ */
+typedef void *pm_device_subsys_t;
+
+/**
  * @brief Device PM action callback.
  *
  * @param dev Device instance.
@@ -182,7 +189,7 @@ enum pm_device_action {
  * @retval Errno Other negative errno on failure.
  */
 typedef int (*pm_device_action_cb_t)(const struct device *dev,
-				     enum pm_device_action action);
+                                     enum pm_device_action action, pm_device_subsys_t args);
 
 /**
  * @brief Device PM action failed callback
@@ -215,6 +222,7 @@ struct pm_device_base {
 #ifdef CONFIG_PM_DEVICE_POWER_DOMAIN
 	/** Power Domain it belongs */
 	const struct device *domain;
+  void *pd_args;
 #endif /* CONFIG_PM_DEVICE_POWER_DOMAIN */
 };
 
@@ -276,11 +284,12 @@ BUILD_ASSERT(offsetof(struct pm_device_isr, base) == 0);
 #endif /* CONFIG_PM_DEVICE_RUNTIME */
 
 #ifdef CONFIG_PM_DEVICE_POWER_DOMAIN
-#define	Z_PM_DEVICE_POWER_DOMAIN_INIT(_node_id)			\
+#define	Z_PM_DEVICE_POWER_DOMAIN_INIT(_node_id, _pd_args)        \
 	.domain = DEVICE_DT_GET_OR_NULL(DT_PHANDLE(_node_id,	\
-				   power_domains)),
+				   power_domains)), \
+  .pd_args = _pd_args
 #else
-#define Z_PM_DEVICE_POWER_DOMAIN_INIT(obj)
+#define Z_PM_DEVICE_POWER_DOMAIN_INIT(obj, args)
 #endif /* CONFIG_PM_DEVICE_POWER_DOMAIN */
 
 /**
@@ -315,7 +324,7 @@ BUILD_ASSERT(offsetof(struct pm_device_isr, base) == 0);
 		.flags = ATOMIC_INIT(Z_PM_DEVICE_FLAGS(node_id) | (_flags)), \
 		.state = PM_DEVICE_STATE_ACTIVE,			     \
 		.action_cb = pm_action_cb,				     \
-		Z_PM_DEVICE_POWER_DOMAIN_INIT(node_id)			     \
+      Z_PM_DEVICE_POWER_DOMAIN_INIT(node_id, pd_args)   \
 	}
 
 /**
@@ -327,10 +336,11 @@ BUILD_ASSERT(offsetof(struct pm_device_isr, base) == 0);
  * @param obj Name of the #pm_device_base structure being initialized.
  * @param node_id Devicetree node for the initialized device (can be invalid).
  * @param pm_action_cb Device PM control callback function.
+ * @param pd_args
  */
-#define Z_PM_DEVICE_INIT(obj, node_id, pm_action_cb, isr_safe)			\
+#define Z_PM_DEVICE_INIT(obj, node_id, pm_action_cb, isr_safe, pd_args) \
 	{									\
-		.base = Z_PM_DEVICE_BASE_INIT(obj, node_id, pm_action_cb,	\
+		.base = Z_PM_DEVICE_BASE_INIT(obj, node_id, pm_action_cb, pd_args,	\
 				isr_safe ? BIT(PM_DEVICE_FLAG_ISR_SAFE) : 0),	\
 		COND_CODE_1(isr_safe, (), (Z_PM_DEVICE_RUNTIME_INIT(obj)))	\
 	}
@@ -367,14 +377,15 @@ BUILD_ASSERT(offsetof(struct pm_device_isr, base) == 0);
  *
  * @param node_id Node identifier (DT_INVALID_NODE if not a DT device).
  * @param dev_id Device id.
+ * @param pd_args
  * @param pm_action_cb PM control callback.
  */
-#define Z_PM_DEVICE_DEFINE(node_id, dev_id, pm_action_cb, isr_safe)		\
+#define Z_PM_DEVICE_DEFINE(node_id, dev_id, pm_action_cb, pd_args, isr_safe) \
 	Z_PM_DEVICE_DEFINE_SLOT(dev_id);					\
 	static struct COND_CODE_1(isr_safe, (pm_device_isr), (pm_device))	\
 		Z_PM_DEVICE_NAME(dev_id) =					\
 		Z_PM_DEVICE_INIT(Z_PM_DEVICE_NAME(dev_id), node_id,		\
-				 pm_action_cb, isr_safe)
+                     pm_action_cb, pd_args, isr_safe)
 
 /**
  * Get a reference to the device PM resources.
@@ -427,14 +438,16 @@ BUILD_ASSERT(offsetof(struct pm_device_isr, base) == 0);
  *
  * @param idx Instance index.
  * @param pm_action_cb PM control callback.
+ * @param pd_args
  * @param ... Optional flag to indicate that device is isr_ok. Use @ref PM_DEVICE_ISR_SAFE or 0.
  *
  * @see #PM_DEVICE_DT_DEFINE, #PM_DEVICE_DEFINE
  */
-#define PM_DEVICE_DT_INST_DEFINE(idx, pm_action_cb, ...)		\
+#define PM_DEVICE_DT_INST_DEFINE(idx, pm_action_cb, pd_args, ...)  \
 	Z_PM_DEVICE_DEFINE(DT_DRV_INST(idx),				\
 			   Z_DEVICE_DT_DEV_ID(DT_DRV_INST(idx)),	\
 			   pm_action_cb,				\
+    pd_args,\
 			   COND_CODE_1(IS_EMPTY(__VA_ARGS__), (0), (__VA_ARGS__)))
 
 /**

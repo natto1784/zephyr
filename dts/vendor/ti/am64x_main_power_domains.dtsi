@@ -10,7 +10,7 @@
 			tisci,device-id = <0>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		cmp_event_introuter0_pd: cmp_event_introuter0_pd {
@@ -18,7 +18,7 @@
 			tisci,device-id = <1>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		dbgsuspendrouter0_pd: dbgsuspendrouter0_pd {
@@ -26,7 +26,7 @@
 			tisci,device-id = <2>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		main_gpiomux_introuter0_pd: main_gpiomux_introuter0_pd {
@@ -34,7 +34,7 @@
 			tisci,device-id = <3>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		timesync_event_introuter0_pd: timesync_event_introuter0_pd {
@@ -42,7 +42,7 @@
 			tisci,device-id = <6>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		cpsw0_pd: cpsw0_pd {
@@ -50,7 +50,7 @@
 			tisci,device-id = <13>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		cpt2_aggr0_pd: cpt2_aggr0_pd {
@@ -58,7 +58,7 @@
 			tisci,device-id = <14>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		stm0_pd: stm0_pd {
@@ -66,7 +66,7 @@
 			tisci,device-id = <15>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		dcc0_pd: dcc0_pd {
@@ -74,7 +74,7 @@
 			tisci,device-id = <16>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		dcc1_pd: dcc1_pd {
@@ -82,7 +82,7 @@
 			tisci,device-id = <17>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		dcc2_pd: dcc2_pd {
@@ -90,7 +90,7 @@
 			tisci,device-id = <18>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		dcc3_pd: dcc3_pd {
@@ -98,7 +98,7 @@
 			tisci,device-id = <19>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		dcc4_pd: dcc4_pd {
@@ -106,7 +106,7 @@
 			tisci,device-id = <20>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		dcc5_pd: dcc5_pd {
@@ -114,7 +114,7 @@
 			tisci,device-id = <21>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		dmsc0_pd: dmsc0_pd {
@@ -122,7 +122,7 @@
 			tisci,device-id = <22>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		debugss_wrap0_pd: debugss_wrap0_pd {
@@ -130,7 +130,7 @@
 			tisci,device-id = <24>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		dmass0_pd: dmass0_pd {
@@ -138,7 +138,7 @@
 			tisci,device-id = <25>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		dmass0_bcdma_0_pd: dmass0_bcdma_0_pd {
@@ -146,7 +146,7 @@
 			tisci,device-id = <26>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		dmass0_cbass_0_pd: dmass0_cbass_0_pd {
@@ -154,7 +154,7 @@
 			tisci,device-id = <27>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		dmass0_intaggr_0_pd: dmass0_intaggr_0_pd {
@@ -162,7 +162,7 @@
 			tisci,device-id = <28>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		dmass0_ipcss_0_pd: dmass0_ipcss_0_pd {
@@ -170,7 +170,7 @@
 			tisci,device-id = <29>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		dmass0_pktdma_0_pd: dmass0_pktdma_0_pd {
@@ -178,7 +178,7 @@
 			tisci,device-id = <30>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		dmass0_ringacc_0_pd: dmass0_ringacc_0_pd {
@@ -186,7 +186,7 @@
 			tisci,device-id = <33>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		timer0_pd: timer0_pd {
@@ -194,7 +194,7 @@
 			tisci,device-id = <36>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		timer1_pd: timer1_pd {
@@ -202,7 +202,7 @@
 			tisci,device-id = <37>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		timer2_pd: timer2_pd {
@@ -210,7 +210,7 @@
 			tisci,device-id = <38>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		timer3_pd: timer3_pd {
@@ -218,7 +218,7 @@
 			tisci,device-id = <39>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		timer4_pd: timer4_pd {
@@ -226,7 +226,7 @@
 			tisci,device-id = <40>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		timer5_pd: timer5_pd {
@@ -234,7 +234,7 @@
 			tisci,device-id = <41>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		timer6_pd: timer6_pd {
@@ -242,7 +242,7 @@
 			tisci,device-id = <42>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		timer7_pd: timer7_pd {
@@ -250,7 +250,7 @@
 			tisci,device-id = <43>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		timer8_pd: timer8_pd {
@@ -258,7 +258,7 @@
 			tisci,device-id = <44>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		timer9_pd: timer9_pd {
@@ -266,7 +266,7 @@
 			tisci,device-id = <45>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		timer10_pd: timer10_pd {
@@ -274,7 +274,7 @@
 			tisci,device-id = <46>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		timer11_pd: timer11_pd {
@@ -282,7 +282,7 @@
 			tisci,device-id = <47>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		ecap0_pd: ecap0_pd {
@@ -290,7 +290,7 @@
 			tisci,device-id = <51>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		ecap1_pd: ecap1_pd {
@@ -298,7 +298,7 @@
 			tisci,device-id = <52>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		ecap2_pd: ecap2_pd {
@@ -306,7 +306,7 @@
 			tisci,device-id = <53>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		elm0_pd: elm0_pd {
@@ -314,7 +314,7 @@
 			tisci,device-id = <54>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		emif_data_0_vd_pd: emif_data_0_vd_pd {
@@ -322,7 +322,7 @@
 			tisci,device-id = <55>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		mmcsd0_pd: mmcsd0_pd {
@@ -330,7 +330,7 @@
 			tisci,device-id = <57>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		mmcsd1_pd: mmcsd1_pd {
@@ -338,7 +338,7 @@
 			tisci,device-id = <58>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		eqep0_pd: eqep0_pd {
@@ -346,7 +346,7 @@
 			tisci,device-id = <59>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		eqep1_pd: eqep1_pd {
@@ -354,7 +354,7 @@
 			tisci,device-id = <60>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		gtc0_pd: gtc0_pd {
@@ -362,7 +362,7 @@
 			tisci,device-id = <61>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		eqep2_pd: eqep2_pd {
@@ -370,7 +370,7 @@
 			tisci,device-id = <62>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		esm0_pd: esm0_pd {
@@ -378,7 +378,7 @@
 			tisci,device-id = <63>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		fsirx0_pd: fsirx0_pd {
@@ -386,7 +386,7 @@
 			tisci,device-id = <65>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		fsirx1_pd: fsirx1_pd {
@@ -394,7 +394,7 @@
 			tisci,device-id = <66>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		fsirx2_pd: fsirx2_pd {
@@ -402,7 +402,7 @@
 			tisci,device-id = <67>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		fsirx3_pd: fsirx3_pd {
@@ -410,7 +410,7 @@
 			tisci,device-id = <68>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		fsirx4_pd: fsirx4_pd {
@@ -418,7 +418,7 @@
 			tisci,device-id = <69>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		fsirx5_pd: fsirx5_pd {
@@ -426,7 +426,7 @@
 			tisci,device-id = <70>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		fsitx0_pd: fsitx0_pd {
@@ -434,7 +434,7 @@
 			tisci,device-id = <71>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		fsitx1_pd: fsitx1_pd {
@@ -442,7 +442,7 @@
 			tisci,device-id = <72>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		fss0_pd: fss0_pd {
@@ -450,7 +450,7 @@
 			tisci,device-id = <73>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		fss0_fsas_0_pd: fss0_fsas_0_pd {
@@ -458,7 +458,7 @@
 			tisci,device-id = <74>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		fss0_ospi_0_pd: fss0_ospi_0_pd {
@@ -466,7 +466,7 @@
 			tisci,device-id = <75>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		gicss0_pd: gicss0_pd {
@@ -474,7 +474,7 @@
 			tisci,device-id = <76>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		gpio0_pd: gpio0_pd {
@@ -482,7 +482,7 @@
 			tisci,device-id = <77>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		gpio1_pd: gpio1_pd {
@@ -490,7 +490,7 @@
 			tisci,device-id = <78>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		gpmc0_pd: gpmc0_pd {
@@ -498,7 +498,7 @@
 			tisci,device-id = <80>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		pru_icssg0_pd: pru_icssg0_pd {
@@ -506,7 +506,7 @@
 			tisci,device-id = <81>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		pru_icssg1_pd: pru_icssg1_pd {
@@ -514,7 +514,7 @@
 			tisci,device-id = <82>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		led0_pd: led0_pd {
@@ -522,7 +522,7 @@
 			tisci,device-id = <83>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		cpts0_pd: cpts0_pd {
@@ -530,7 +530,7 @@
 			tisci,device-id = <84>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		ddpa0_pd: ddpa0_pd {
@@ -538,7 +538,7 @@
 			tisci,device-id = <85>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		epwm0_pd: epwm0_pd {
@@ -546,7 +546,7 @@
 			tisci,device-id = <86>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		epwm1_pd: epwm1_pd {
@@ -554,7 +554,7 @@
 			tisci,device-id = <87>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		epwm2_pd: epwm2_pd {
@@ -562,7 +562,7 @@
 			tisci,device-id = <88>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		epwm3_pd: epwm3_pd {
@@ -570,7 +570,7 @@
 			tisci,device-id = <89>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		epwm4_pd: epwm4_pd {
@@ -578,7 +578,7 @@
 			tisci,device-id = <90>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		epwm5_pd: epwm5_pd {
@@ -586,7 +586,7 @@
 			tisci,device-id = <91>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		epwm6_pd: epwm6_pd {
@@ -594,7 +594,7 @@
 			tisci,device-id = <92>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		epwm7_pd: epwm7_pd {
@@ -602,7 +602,7 @@
 			tisci,device-id = <93>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		epwm8_pd: epwm8_pd {
@@ -610,7 +610,7 @@
 			tisci,device-id = <94>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		vtm0_pd: vtm0_pd {
@@ -618,7 +618,7 @@
 			tisci,device-id = <95>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		mailbox0_pd: mailbox0_pd {
@@ -626,7 +626,7 @@
 			tisci,device-id = <96>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		main2mcu_vd_pd: main2mcu_vd_pd {
@@ -634,7 +634,7 @@
 			tisci,device-id = <97>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		mcan0_pd: mcan0_pd {
@@ -642,7 +642,7 @@
 			tisci,device-id = <98>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		mcan1_pd: mcan1_pd {
@@ -650,7 +650,7 @@
 			tisci,device-id = <99>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		i2c0_pd: i2c0_pd {
@@ -658,7 +658,7 @@
 			tisci,device-id = <102>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		i2c1_pd: i2c1_pd {
@@ -666,7 +666,7 @@
 			tisci,device-id = <103>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		i2c2_pd: i2c2_pd {
@@ -674,7 +674,7 @@
 			tisci,device-id = <104>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		i2c3_pd: i2c3_pd {
@@ -682,7 +682,7 @@
 			tisci,device-id = <105>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		pcie0_pd: pcie0_pd {
@@ -690,7 +690,7 @@
 			tisci,device-id = <114>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		r5fss0_pd: r5fss0_pd {
@@ -698,7 +698,7 @@
 			tisci,device-id = <119>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		r5fss1_pd: r5fss1_pd {
@@ -706,7 +706,7 @@
 			tisci,device-id = <120>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		r5fss0_core0_pd: r5fss0_core0_pd {
@@ -714,7 +714,7 @@
 			tisci,device-id = <121>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		r5fss0_core1_pd: r5fss0_core1_pd {
@@ -722,7 +722,7 @@
 			tisci,device-id = <122>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		r5fss1_core0_pd: r5fss1_core0_pd {
@@ -730,7 +730,7 @@
 			tisci,device-id = <123>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		r5fss1_core1_pd: r5fss1_core1_pd {
@@ -738,7 +738,7 @@
 			tisci,device-id = <124>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		rti0_pd: rti0_pd {
@@ -746,7 +746,7 @@
 			tisci,device-id = <125>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		rti1_pd: rti1_pd {
@@ -754,7 +754,7 @@
 			tisci,device-id = <126>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		rti8_pd: rti8_pd {
@@ -762,7 +762,7 @@
 			tisci,device-id = <127>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		rti9_pd: rti9_pd {
@@ -770,7 +770,7 @@
 			tisci,device-id = <128>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		rti10_pd: rti10_pd {
@@ -778,7 +778,7 @@
 			tisci,device-id = <130>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		rti11_pd: rti11_pd {
@@ -786,7 +786,7 @@
 			tisci,device-id = <131>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		sa2_ul0_pd: sa2_ul0_pd {
@@ -794,7 +794,7 @@
 			tisci,device-id = <133>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		compute_cluster0_pd: compute_cluster0_pd {
@@ -802,7 +802,7 @@
 			tisci,device-id = <134>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		a53ss0_core_0_pd: a53ss0_core_0_pd {
@@ -810,7 +810,7 @@
 			tisci,device-id = <135>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		a53ss0_core_1_pd: a53ss0_core_1_pd {
@@ -818,7 +818,7 @@
 			tisci,device-id = <136>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		a53ss0_pd: a53ss0_pd {
@@ -826,7 +826,7 @@
 			tisci,device-id = <137>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		ddr16ss0_pd: ddr16ss0_pd {
@@ -834,7 +834,7 @@
 			tisci,device-id = <138>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		psc0_pd: psc0_pd {
@@ -842,7 +842,7 @@
 			tisci,device-id = <139>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		mcspi0_pd: mcspi0_pd {
@@ -850,7 +850,7 @@
 			tisci,device-id = <141>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		mcspi1_pd: mcspi1_pd {
@@ -858,7 +858,7 @@
 			tisci,device-id = <142>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		mcspi2_pd: mcspi2_pd {
@@ -866,7 +866,7 @@
 			tisci,device-id = <143>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		mcspi3_pd: mcspi3_pd {
@@ -874,7 +874,7 @@
 			tisci,device-id = <144>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		mcspi4_pd: mcspi4_pd {
@@ -882,7 +882,7 @@
 			tisci,device-id = <145>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		uart0_pd: uart0_pd {
@@ -890,7 +890,7 @@
 			tisci,device-id = <146>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		spinlock0_pd: spinlock0_pd {
@@ -898,7 +898,7 @@
 			tisci,device-id = <150>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		timermgr0_pd: timermgr0_pd {
@@ -906,7 +906,7 @@
 			tisci,device-id = <151>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		uart1_pd: uart1_pd {
@@ -914,7 +914,7 @@
 			tisci,device-id = <152>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		uart2_pd: uart2_pd {
@@ -922,7 +922,7 @@
 			tisci,device-id = <153>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		uart3_pd: uart3_pd {
@@ -930,7 +930,7 @@
 			tisci,device-id = <154>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		uart4_pd: uart4_pd {
@@ -938,7 +938,7 @@
 			tisci,device-id = <155>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		uart5_pd: uart5_pd {
@@ -946,7 +946,7 @@
 			tisci,device-id = <156>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		board0_pd: board0_pd {
@@ -954,7 +954,7 @@
 			tisci,device-id = <157>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		uart6_pd: uart6_pd {
@@ -962,7 +962,7 @@
 			tisci,device-id = <158>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		usb0_pd: usb0_pd {
@@ -970,7 +970,7 @@
 			tisci,device-id = <161>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		serdes_10g0_pd: serdes_10g0_pd {
@@ -978,7 +978,7 @@
 			tisci,device-id = <162>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		pbist0_pd: pbist0_pd {
@@ -986,7 +986,7 @@
 			tisci,device-id = <163>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		pbist1_pd: pbist1_pd {
@@ -994,7 +994,7 @@
 			tisci,device-id = <164>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		pbist2_pd: pbist2_pd {
@@ -1002,7 +1002,7 @@
 			tisci,device-id = <165>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		pbist3_pd: pbist3_pd {
@@ -1010,7 +1010,7 @@
 			tisci,device-id = <166>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 
 		compute_cluster0_pbist_0_pd: compute_cluster0_pbist_0_pd {
@@ -1018,7 +1018,7 @@
 			tisci,device-id = <167>;
 			tisci,device-mode = "EXCLUSIVE";
 			#power-domain-cells = <0>;
-			zephyr,pm-device-runtime-auto;
+			status = "disabled";
 		};
 	};
 };

@@ -1,5 +1,6 @@
 /* ns16550.c - NS16550D serial driver */
 
+#include "zephyr/pm/device_runtime.h"
 #define DT_DRV_COMPAT ns16550
 
 /*
@@ -41,6 +42,10 @@
 
 #include <zephyr/drivers/serial/uart_ns16550.h>
 #include <zephyr/logging/log.h>
+
+#ifdef CONFIG_CLOCK_CONTROL_TISCI
+#include <zephyr/drivers/clock_control/tisci_clock_control.h>
+#endif
 
 LOG_MODULE_REGISTER(uart_ns16550, CONFIG_UART_LOG_LEVEL);
 
@@ -593,6 +598,22 @@ static int uart_ns16550_configure(const struct device *dev,
 	uint32_t pclk = 0U;
 	int ret;
 
+#ifdef CONFIG_PM_DEVICE_POWER_DOMAIN
+	if (pm_device_on_power_domain(dev)) {
+		if (dev->pm_base && dev->pm_base->domain) {
+      /* make sure the power domain is running */
+			ret = pm_device_runtime_get(dev->pm_base->domain);
+			if (ret < 0) {
+				return ret;
+			}
+		}
+	}
+#endif
+
+	/* clear the port */
+	(void)ns16550_read_char(dev, &c);
+	ns16550_outbyte(dev_cfg, FCR(dev), (FCR_RCVRCLR | FCR_XMITCLR));
+
 	k_spinlock_key_t key = k_spin_lock(&dev_data->lock);
 
 #if defined(CONFIG_PINCTRL)
@@ -642,7 +663,6 @@ static int uart_ns16550_configure(const struct device *dev,
 		if (ret != 0 && ret != -EALREADY && ret != -ENOSYS) {
 			goto out;
 		}
-
 		if (clock_control_get_rate(dev_cfg->clock_dev,
 					   dev_cfg->clock_subsys,
 					   &pclk) != 0) {
@@ -650,6 +670,7 @@ static int uart_ns16550_configure(const struct device *dev,
 			goto out;
 		}
 	}
+        
 
 	set_baud_rate(dev, cfg->baudrate, pclk);
 
@@ -935,10 +956,6 @@ static int uart_ns16550_init(const struct device *dev)
 #ifdef CONFIG_UART_INTERRUPT_DRIVEN
 	dev_cfg->irq_config_func(dev);
 #endif
-
-	/* clear the port */
-	(void)ns16550_read_char(dev, &c);
-	ns16550_outbyte(dev_cfg, FCR(dev), (FCR_RCVRCLR | FCR_XMITCLR));
 
 	return pm_device_driver_init(dev, uart_ns16550_pm_action);
 }
@@ -2058,6 +2075,14 @@ static DEVICE_API(uart, uart_ns16550_driver_api) = {
 #endif /* CONFIG_UART_ASYNC_API */
 
 
+#define UART_NS16550_DEFINE_CLOCK_SUBSYS(n)                                         \
+	COND_CODE_0(DT_INST_NODE_HAS_PROP(n, clock_frequency), (                    \
+		COND_CODE_1(CONFIG_CLOCK_CONTROL_TISCI, (                           \
+			static const struct tisci_clock_config tisci_fclk_##n =     \
+				TISCI_GET_CLOCK_DETAILS_BY_INST(n);                 \
+		), ( /* other vendors go here */ ))                                 \
+	), ())
+
 #define UART_NS16550_COMMON_DEV_CFG_INITIALIZER(n)                                   \
 		COND_CODE_1(DT_INST_NODE_HAS_PROP(n, clock_frequency), (             \
 				.sys_clk_freq = DT_INST_PROP(n, clock_frequency),    \
@@ -2066,8 +2091,10 @@ static DEVICE_API(uart, uart_ns16550_driver_api) = {
 			), (                                                         \
 				.sys_clk_freq = 0,                                   \
 				.clock_dev = DEVICE_DT_GET(DT_INST_CLOCKS_CTLR(n)),  \
-				.clock_subsys = (clock_control_subsys_t) DT_INST_PHA(\
-								n, clocks, clkid),   \
+				.clock_subsys = (clock_control_subsys_t)             \
+					COND_CODE_1(CONFIG_CLOCK_CONTROL_TISCI,      \
+						   (&tisci_fclk_##n),		     \
+                                                   (DT_INST_PHA(n, clocks, clkid))), \
 			)                                                            \
 		)                                                                    \
 		IF_ENABLED(DT_INST_NODE_HAS_PROP(n, pcp),                            \
@@ -2093,6 +2120,7 @@ static DEVICE_API(uart, uart_ns16550_driver_api) = {
 		DEV_DATA_ASYNC(n)						     \
 
 #define UART_NS16550_DEVICE_IO_MMIO_INIT(n)                                          \
+        UART_NS16550_DEFINE_CLOCK_SUBSYS(n);   \
 	UART_NS16550_IRQ_FUNC_DECLARE(n);                                            \
 	IF_ENABLED(CONFIG_PINCTRL, (PINCTRL_DT_INST_DEFINE(n)));                     \
 	static const struct uart_ns16550_dev_config uart_ns16550_dev_cfg_##n = {     \

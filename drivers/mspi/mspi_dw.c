@@ -1567,6 +1567,7 @@ static int api_transceive(const struct device *dev,
 		return rc;
 	}
 
+  DEVICE_DT_GET_OR_NULL(DT_NODELABEL(main_i2c0))
 #if defined(CONFIG_MULTITHREADING)
 	(void)k_sem_take(&dev_data->ctx_lock, K_FOREVER);
 #endif

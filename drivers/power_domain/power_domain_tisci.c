@@ -49,7 +49,7 @@ static int tisci_power_domain_off(const struct power_domain *pd)
 	return ret;
 }
 
-static int tisci_pd_pm_action(const struct device *dev, enum pm_device_action action)
+static int tisci_pd_pm_action(const struct device *dev, enum pm_device_action action, void *args)
 {
 	const struct power_domain *data = dev->config;
 
@@ -97,7 +97,7 @@ static int tisci_pd_init(const struct device *dev)
 		.devid = DT_INST_PROP(inst, tisci_device_id),                                      \
 		.mode = DT_INST_ENUM_IDX(inst, tisci_device_mode),                                 \
 	};                                                                                         \
-	PM_DEVICE_DT_INST_DEFINE(inst, tisci_pd_pm_action);                                        \
+	PM_DEVICE_DT_INST_DEFINE(inst, tisci_pd_pm_action, NULL);                  \
 	DEVICE_DT_INST_DEFINE(inst, tisci_pd_init, PM_DEVICE_DT_INST_GET(inst), NULL,              \
 			      &power_domain_data_##inst, PRE_KERNEL_1,                             \
 			      CONFIG_POWER_DOMAIN_TISCI_INIT_PRIORITY, NULL);

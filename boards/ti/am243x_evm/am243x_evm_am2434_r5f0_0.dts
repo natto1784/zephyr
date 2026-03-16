@@ -8,6 +8,7 @@
 #include <zephyr/dt-bindings/gpio/gpio.h>
 #include <ti/am64x_r5f0_0.dtsi>
 #include "am243x_evm_am2434_r5f0_0-pinctrl.dtsi"
+#include "am243x_evm_am2434_m4-pinctrl.dtsi"
 
 / {
 	model = "TI AM243x EVM R5F Cluster 0 Core 0";
@@ -16,8 +17,8 @@
 	chosen {
 		zephyr,sram = &sram;
 		zephyr,sram1 = &atcm;
-		zephyr,console = &main_uart0;
-		zephyr,shell-uart = &main_uart0;
+		zephyr,console = &mcu_uart0;
+		zephyr,shell-uart = &mcu_uart0;
 		zephyr,ipc = &ipc0;
 		zephyr,ipc-shm = &ipc_shm0;
 	};
@@ -70,11 +71,21 @@
 	status = "okay";
 };
 
+&mcu_uart0 {
+	current-speed = <115200>;
+	pinctrl-0 = <&mcu_uart0_rx &mcu_uart0_tx>;
+	pinctrl-names = "default";
+	status = "okay";
+};
 &main_uart0 {
 	status = "okay";
 	pinctrl-0 = <&main_uart0_tx &main_uart0_rx>;
 	pinctrl-names = "default";
 	current-speed = <115200>;
+};
+
+&uart0_pd {
+
 };
 
 &mcu_gpio0 {

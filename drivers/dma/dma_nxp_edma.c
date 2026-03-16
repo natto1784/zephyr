@@ -5,6 +5,7 @@
  */
 
 #include "dma_nxp_edma.h"
+#include "zephyr/pm/device.h"
 
 #define EDMA_ACTIVE_TIMEOUT 50
 
