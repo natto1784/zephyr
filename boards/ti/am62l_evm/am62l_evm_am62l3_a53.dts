@@ -53,3 +53,17 @@
 	pinctrl-names = "default";
 	status = "okay";
 };
+
+&main_i2c1 {
+	pinctrl-0 = <&i2c1_scl &i2c1_sda>;
+	pinctrl-names = "default";
+	status = "okay";
+
+	gpio_expander2: tca6424a@23 {
+		compatible = "ti,tca6424a";
+		reg = <0x23>;
+		gpio-controller;
+		#gpio-cells = <2>;
+		ngpios = <24>;
+	};
+};

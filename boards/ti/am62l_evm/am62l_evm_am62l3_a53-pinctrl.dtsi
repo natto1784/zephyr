@@ -26,4 +26,12 @@
 	main_epwm0_b: epwm0_b_default {
 		pinmux = <K3_PINMUX(0x0b0, PIN_OUTPUT, MUX_MODE_4)>;  /* (F22) EHRPWM0_B */
 	};
+
+	i2c1_scl: i2c1_scl_default {
+		pinmux = <K3_PINMUX(0x1d4, PIN_INPUT, MUX_MODE_0)>; /* (B16) I2C1_SCL */
+	};
+
+	i2c1_sda: i2c1_sda_default {
+		pinmux = <K3_PINMUX(0x1d8, PIN_INPUT, MUX_MODE_0)>; /* (A16) I2C1_SDA */
+	};
 };
