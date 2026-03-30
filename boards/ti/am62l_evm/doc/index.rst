@@ -12,6 +12,7 @@ the TI AM62L platform. The board configuration provides support for:
    - ARM Generic Timer (arch_timer)
    - On-chip SRAM (oc_sram)
    - UART interfaces (uart0 to uart6)
+   - Optional I/O expander (TCA6424)
 
 The board configuration also enables support for the semihosting debugging console.
 
@@ -36,6 +37,29 @@ Supported Features
 ==================
 
 .. zephyr:board-supported-hw::
+
+I/O Expander Configuration
+===========================
+
+The AM62L EVM includes an optional I/O expander configuration that provides access to
+extended I/O capabilities through the TCA6424A I2C GPIO expander. This configuration
+is controlled via Kconfig and enables additional GPIO pins and board-level signal routing.
+
+Enabling I/O Expander Support
+-----------------------------
+
+To enable I/O expander functionality, set the following configuration:
+
+.. code-block:: kconfig
+
+   CONFIG_AM62L_EVM_IO_EXPANDER=y
+
+This configuration option:
+
+- Automatically enables required subsystems (``I2C``, ``GPIO``, ``GPIO_HOGS``)
+- Configures GPIO0.89 (``GPIO_SOC_VOUT0_FET_SEL0_PIN``) to power the I/O expander
+- Enables TCA6424A GPIO.1 (``VOUT0_FET_SEL0``) for additional I/O resources
+- Sets proper initialization priorities to ensure GPIO hogs run before I2C initialization
 
 Devices
 ========

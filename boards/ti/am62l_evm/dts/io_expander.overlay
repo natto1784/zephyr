@@ -1,0 +1,41 @@
+/*
+ * Copyright (c) 2026 Texas Instruments Incorporated
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+/*
+ * I/O Expander Auto-Configuration Overlay for AM62L EVM
+ */
+
+&wkup_pinctrl {
+	status = "okay";
+
+	gpio0_89: gpio0_89_default {
+		pinmux = <K3_PINMUX(0x1a8, PIN_INPUT, MUX_MODE_0)>; /* (E13) GPIO0_89 */
+	};
+};
+
+&main_gpio0_2 {
+gpio_expansion_hog: gpio-expansion-hog {
+		gpio-hog;
+		gpios = <25 GPIO_ACTIVE_HIGH>; /* GPIO0.89 */
+		output-high;
+		line-name = "GPIO_SOC_VOUT0_FET_SEL0_PIN";
+	};
+
+	pinctrl-0 = <&gpio0_89>;
+	pinctrl-names = "default";
+	status = "okay";
+};
+
+&gpio_expander2 {
+	user_expansion_header_hog: user-expansion-header-hog {
+		gpio-hog;
+		gpios = <1 GPIO_ACTIVE_HIGH>;
+		output-high;
+		line-name = "VOUT0_FET_SEL0";
+	};
+
+	status = "okay";
+};
