@@ -320,6 +320,7 @@ typedef int (*counter_api_set_guard_period_64)(const struct device *dev, uint64_
 typedef uint64_t (*counter_api_get_top_value_64)(const struct device *dev);
 typedef int (*counter_api_set_top_value_64)(const struct device *dev,
 					    const struct counter_top_cfg_64 *cfg);
+typedef bool (*counter_api_is_counting_up)(const struct device *dev);
 
 __subsystem struct counter_driver_api {
 	counter_api_start start;
@@ -335,6 +336,7 @@ __subsystem struct counter_driver_api {
 	counter_api_get_guard_period get_guard_period;
 	counter_api_set_guard_period set_guard_period;
 	counter_api_get_freq get_freq;
+	counter_api_is_counting_up is_counting_up;
 #ifdef CONFIG_COUNTER_64BITS_FREQ
 	counter_api_get_freq_64 get_freq_64;
 #endif /* CONFIG_COUNTER_64BITS_FREQ */
@@ -362,8 +364,10 @@ __syscall bool counter_is_counting_up(const struct device *dev);
 static inline bool z_impl_counter_is_counting_up(const struct device *dev)
 {
 	const struct counter_config_info *config = (const struct counter_config_info *)dev->config;
+	const struct counter_driver_api *api = (struct counter_driver_api *)dev->api;
 
-	return config->flags & COUNTER_CONFIG_INFO_COUNT_UP;
+	return api->is_counting_up ? api->is_counting_up(dev)
+				   : config->flags & COUNTER_CONFIG_INFO_COUNT_UP;
 }
 
 /**
