@@ -34,4 +34,28 @@
 	main_gpio0_89: gpio0_89_default {
 		pinmux = <K3_PINMUX(0x1a8, PIN_INPUT, MUX_MODE_7)>; /* (E13) GPIO0_89 */
 	};
+
+	gpio0_18: gpio0_18_default {
+		pinmux = <K3_PINMUX(0x084, PIN_OUTPUT, MUX_MODE_7)>;
+	};
+  
+	gpio0_19: gpio0_19_default {
+		pinmux = <K3_PINMUX(0x088, PIN_OUTPUT, MUX_MODE_7)>;
+	};
+  
+	gpio0_20: gpio0_20_default {
+		pinmux = <K3_PINMUX(0x08C, PIN_OUTPUT, MUX_MODE_7)>;
+	};
+  
+	gpio0_21: gpio0_21_default {
+		pinmux = <K3_PINMUX(0x090, PIN_OUTPUT, MUX_MODE_7)>;
+	};
+
+	main_i2c1_scl: i2c1_scl_default {
+		pinmux = <K3_PINMUX(0x1d4, PIN_INPUT, MUX_MODE_0)>; /* (D7) I2C1_SCL */
+	};
+
+	main_i2c1_sda: i2c1_sda_default {
+		pinmux = <K3_PINMUX(0x1d8, PIN_INPUT, MUX_MODE_0)>; /* (A6) I2C1_SDA */
+	};
 };

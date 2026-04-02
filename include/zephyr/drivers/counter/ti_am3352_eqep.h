@@ -13,6 +13,12 @@
 #ifndef ZEPHYR_INCLUDE_DRIVERS_COUNTER_TI_AM3352_EQEP_H_
 #define ZEPHYR_INCLUDE_DRIVERS_COUNTER_TI_AM3352_EQEP_H_
 
+#include <zephyr/drivers/counter.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * @brief TI AM3352 EQEP counter device-specific API extension
  * @defgroup ti_am3352_eqep_interface TI AM3352 EQEP counter
@@ -21,12 +27,6 @@
  * @ingroup counter_interface
  * @{
  */
-
-#include <zephyr/drivers/counter.h>
-
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 /**
  * @brief EQEP Event Source Identifiers (Logical Channels)
@@ -228,12 +228,14 @@ __syscall void ti_eqep_configure_capture(const struct device *dev,
 __syscall int ti_eqep_get_latched_capture_values(const struct device *dev, uint32_t *timer,
 						 uint32_t *period, bool scale);
 
+/**
+ * @}
+ */
+
 #ifdef __cplusplus
 }
 #endif
 
-/**
- * @}
- */
+#include <zephyr/syscalls/ti_am3352_eqep.h>
 
 #endif /* ZEPHYR_INCLUDE_DRIVERS_COUNTER_TI_AM3352_EQEP_H_ */
