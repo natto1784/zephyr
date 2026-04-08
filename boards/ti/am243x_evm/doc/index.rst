@@ -1,3 +1,8 @@
+..
+   SPDX-FileCopyrightText: Copyright The Zephyr Project Contributors
+   SPDX-FileCopyrightText: Copyright 2025 Siemens Mobility GmbH
+   SPDX-License-Identifier: Apache-2.0
+
 .. zephyr:board:: am243x_evm
 
 Overview
@@ -272,8 +277,6 @@ MCU+ SDK Github repository:
 
 License
 *******
-
-This document Copyright (c) Siemens Mobility GmbH
 
 This document Copyright (c) 2025 Texas Instruments
 
