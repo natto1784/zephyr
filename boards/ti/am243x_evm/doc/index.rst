@@ -1,6 +1,7 @@
 ..
    SPDX-FileCopyrightText: Copyright The Zephyr Project Contributors
    SPDX-FileCopyrightText: Copyright 2025 Siemens Mobility GmbH
+   SPDX-FileCopyrightText: Copyright 2025 Texas Instruments
    SPDX-License-Identifier: Apache-2.0
 
 .. zephyr:board:: am243x_evm
@@ -274,10 +275,3 @@ MCU+ SDK Github repository:
 
 .. _build OpenOCD from source:
    https://docs.u-boot.org/en/latest/board/ti/k3.html#building-openocd-from-source
-
-License
-*******
-
-This document Copyright (c) 2025 Texas Instruments
-
-SPDX-License-Identifier: Apache-2.0
