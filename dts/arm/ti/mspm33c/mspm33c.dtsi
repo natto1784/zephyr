@@ -129,6 +129,29 @@
 				#size-cells = <1>;
 			};
 		};
+
+		pinctrl: pin-controller@400CC000 {
+			compatible = "ti,mspm0-pinctrl";
+			reg = <0x400CC000 DT_SIZE_K(8)>;
+		};
+
+		unicomm12: unicomm12@40688000 {
+			reg = <0x40688000 DT_SIZE_K(8)>;
+			compatible = "ti,unicomm";
+			interrupts = <30 0>;
+			#address-cells = <1>;
+			#size-cells = <1>;
+
+			unicomm12_uart: unicomm12_uart@40608000 {
+				reg = <0x40608000 DT_SIZE_K(8)>;
+				interrupts = <30 0>;
+				#address-cells = <1>;
+				#size-cells = <1>;
+				compatible = "ti,mspm0-uart";
+				is-unicomm-uart;
+				clocks = <&ckm MSPM0_CLOCK_MCLK>;
+			};
+		};
 	};
 };
 
