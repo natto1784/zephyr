@@ -152,6 +152,27 @@
 				clocks = <&ckm MSPM0_CLOCK_MCLK>;
 			};
 		};
+
+		unicomm13_0: unicomm13_0@4068A000 {
+			reg = <0x4068A000 DT_SIZE_K(8)>;
+			compatible = "ti,unicomm";
+			interrupts = <31 0>;
+			#address-cells = <1>;
+			#size-cells = <1>;
+			status = "disabled";
+
+			unicomm13_0_uart: unicomm13_0_uart@4060A000 {
+				reg = <0x4060A000 DT_SIZE_K(8)>;
+				interrupts = <31 0>;
+				#address-cells = <1>;
+				#size-cells = <1>;
+				compatible = "ti,mspm0-uart";
+				is-unicomm-uart;
+				clocks = <&ckm MSPM0_CLOCK_MCLK>;
+				clk-div = <1>;
+				status = "disabled";
+			};
+		};
 	};
 };
 
