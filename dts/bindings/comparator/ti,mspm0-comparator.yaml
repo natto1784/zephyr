@@ -135,6 +135,40 @@ properties:
   ti,window-companion:
     type: phandle
 
+  ti,wakeup-window-enable:
+    type: boolean
+    description: |
+      Enable the analog comparison wakeup sequencer. While in STOP mode,
+      hardware sequences through the 4 VMON inputs comparing each against
+      its own ti,wakeup-dac-codes entry, using
+      ti,wakeup-comparison-period and ti,wakeup-blanking-period timing.
+      Any crossing raises the normal comparator interrupt and sets the
+      corresponding bit in ANACMPCHSTS.
+
+  ti,wakeup-dac-codes:
+    type: array
+    default: [0, 0, 0, 0]
+    description: |
+      4 entries, one 8-bit DAC reference code per VMON input.
+      Only used when ti,wakeup-window-enable is set.
+
+  ti,wakeup-comparison-period:
+    type: int
+    default: 0
+    description: |
+      CMPPRD value (0-15): how long each VMON voltage is held and compared
+      against its DACCODE before the sequencer advances. Only used when
+      ti,wakeup-window-enable is set.
+
+  ti,wakeup-total-period:
+    type: int
+    default: 0
+    description: |
+      BLKCMPPRD value (0-255): blanking time plus comparison period
+      combined - actual blanking time is (this value - comparison-period).
+      Must be strictly greater than ti,wakeup-comparison-period. Only used
+      when ti,wakeup-window-enable is set.
+
   vref:
     type: phandle
     description: |
