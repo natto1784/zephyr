@@ -1,0 +1,42 @@
+sample:
+  description: Demonstrates the comparator driver with a regular external-channel
+    comparison, an internal DAC reference comparison, and window comparator mode.
+  name: comparator
+
+common:
+  tags:
+    - comparator
+    - drivers
+  filter: dt_alias_exists("sample-comp")
+  harness: console
+  harness_config:
+    type: one_line
+    regex:
+      - "comparator sample started"
+
+tests:
+  sample.drivers.comparator.regular:
+    platform_allow:
+      - lp_mspm0g3507
+      - lp_mspm0g3519
+      - lp_mspm0l2228
+    integration_platforms:
+      - lp_mspm0g3507
+
+  sample.drivers.comparator.dac:
+    extra_args:
+      - platform:lp_mspm0g3507:EXTRA_DTC_OVERLAY_FILE="boards/lp_mspm0g3507_dac.overlay"
+      - platform:lp_mspm0g3519:EXTRA_DTC_OVERLAY_FILE="boards/lp_mspm0g3519_dac.overlay"
+      - platform:lp_mspm0l2228:EXTRA_DTC_OVERLAY_FILE="boards/lp_mspm0l2228_dac.overlay"
+    platform_allow:
+      - lp_mspm0g3507
+      - lp_mspm0g3519
+      - lp_mspm0l2228
+
+  sample.drivers.comparator.window:
+    extra_args:
+      - platform:lp_mspm0g3507:EXTRA_DTC_OVERLAY_FILE="boards/lp_mspm0g3507_window.overlay"
+      - platform:lp_mspm0g3519:EXTRA_DTC_OVERLAY_FILE="boards/lp_mspm0g3519_window.overlay"
+    platform_allow:
+      - lp_mspm0g3507
+      - lp_mspm0g3519

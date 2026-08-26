@@ -1,0 +1,16 @@
+/*
+ * Copyright (c) 2026 Texas Instruments Incorporated
+ * Copyright (c) 2026 Linumiz
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+&comp1 {
+	status = "okay";
+};
+
+&comp0 {
+	ti,window-mode-enable;
+	ti,window-companion = <&comp1>;
+	ti,window-lower-threshold = <0>; /* TODO: verify desired lower-threshold channel */
+};

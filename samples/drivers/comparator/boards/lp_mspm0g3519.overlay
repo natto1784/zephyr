@@ -1,0 +1,23 @@
+/*
+ * Copyright (c) 2026 Texas Instruments Incorporated
+ * Copyright (c) 2026 Linumiz
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+/ {
+	aliases {
+		sample-comp = &comp0;
+	};
+};
+
+&comp0 {
+	status = "okay";
+	positive-inputs = <2>; /* COMP0_IN2+, PA14 */
+	negative-inputs = <1>; /* TODO: verify channel/pin for external signal on this board */
+	pinctrl-0 = <&comp0_out_pa7>; /* TODO: verify comp0_out pin exposed on this board */
+	ti,filter-enable;
+	ti,filter-delay = <2700>;
+pinctrl-names = "default";
+	ti,mode = "fast";
+};

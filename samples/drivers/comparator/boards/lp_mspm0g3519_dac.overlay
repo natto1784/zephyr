@@ -1,0 +1,12 @@
+/*
+ * Copyright (c) 2026 Texas Instruments Incorporated
+ * Copyright (c) 2026 Linumiz
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+&comp0 {
+	ti,reference-source = "vdda_dac";
+	ti,reference-terminal = "neg";
+	ti,reference-dac-code0 = <128>;
+};
