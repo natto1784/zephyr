@@ -9,3 +9,16 @@ config ADC_MSPM0_ADC12
 	select PINCTRL
 	help
 	  Enable support for ADC12 on the TI MSPM0 series.
+
+config ADC_MSPM0_ADC12_DMA
+	bool "TI MSPM0 ADC12 DMA support"
+	default y
+	depends on ADC_MSPM0_ADC12
+	depends on $(dt_compat_any_has_prop,$(DT_COMPAT_TI_MSPM0_ADC12),dmas)
+	select DMA
+	help
+	  Offload ADC12 sequence-complete result transfers (MEMRES to sequence
+	  buffer) to DMA instead of the CPU interrupt handler. Automatically
+	  available once at least one enabled ti,mspm0-adc12 node declares a
+	  "dmas" property; instances without "dmas" keep using the
+	  interrupt-driven path unchanged.
