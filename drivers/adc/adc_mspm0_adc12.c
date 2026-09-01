@@ -379,11 +379,22 @@ static void adc_context_start_sampling(struct adc_context *ctx)
 	uint32_t memresifg = (1 << data->channel_eoc) << ADC12_CPU_INT_MEMRESIFG0_OFS;
 
 #ifdef CONFIG_ADC_MSPM0_ADC12_DMA
-	if (data->dma_ready) {
-		data->dma_blk_cfg.dest_address = (uintptr_t)data->buffer;
-		dma_config(config->dma_dev, config->dma_channel, &data->dma_cfg);
-		dma_start(config->dma_dev, config->dma_channel);
-	} else
+	bool use_dma = data->dma_ready;
+
+	if (use_dma) {
+		regs->dma_trig.iclr |= memresifg;
+		regs->dma_trig.imask |= memresifg;
+		if (dma_reload(config->dma_dev, config->dma_channel,
+				data->dma_blk_cfg.source_address, (uintptr_t)data->buffer,
+				data->dma_blk_cfg.block_size) < 0 ||
+		    dma_start(config->dma_dev, config->dma_channel) < 0) {
+			LOG_ERR("Failed to arm ADC DMA transfer, falling back to interrupt mode");
+			regs->dma_trig.imask &= ~memresifg;
+			use_dma = false;
+		}
+	}
+
+	if (!use_dma)
 #endif
 	{
 		regs->cpu_int.iclr |= memresifg;
