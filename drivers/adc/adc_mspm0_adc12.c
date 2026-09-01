@@ -287,10 +287,9 @@ static void adc_mspm0_isr(const struct device *dev)
 	case ADC12_CPU_INT_IIDX_STAT_VAL_MEMRESIFG9:
 	case ADC12_CPU_INT_IIDX_STAT_VAL_MEMRESIFG10:
 	case ADC12_CPU_INT_IIDX_STAT_VAL_MEMRESIFG11:
-		for (mem_ix = 0; mem_ix < data->channel_eoc; mem_ix++) {
-			*data->buffer++ = adc_mspm0_get_mem_result(regs, mem_ix);
+		for (mem_ix = 0; mem_ix <= data->channel_eoc; mem_ix++) {
+			data->buffer[mem_ix] = adc_mspm0_get_mem_result(regs, mem_ix);
 		}
-		*data->buffer = adc_mspm0_get_mem_result(regs, mem_ix);
 		regs->cpu_int.imask &=
 			~((1 << (data->channel_eoc)) << ADC12_CPU_INT_MEMRESIFG0_OFS);
 		break;
@@ -322,7 +321,7 @@ static void adc_context_update_buffer_pointer(struct adc_context *ctx, bool repe
 	if (repeat) {
 		data->buffer = data->repeat_buffer;
 	} else {
-		data->buffer++;
+		data->buffer += data->channel_eoc + 1;
 	}
 }
 
