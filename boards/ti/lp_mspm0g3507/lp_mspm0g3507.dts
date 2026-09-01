@@ -163,3 +163,7 @@
 &dma {
 	status = "okay";
 };
+
+&adc0 {
+	dmas = <&dma 6 23>;
+};
