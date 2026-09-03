@@ -16,4 +16,5 @@ supported:
   - adc
   - spi
   - vref
+  - dma
 vendor: ti
