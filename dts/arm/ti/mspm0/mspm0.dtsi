@@ -210,9 +210,9 @@
 			status = "disabled";
 		};
 
-		pinctrl: pin-controller@40428000 {
+		pinctrl: pin-controller@40428004 {
 			compatible = "ti,mspm0-pinctrl";
-			reg = <0x40428000 0x400>;
+			reg = <0x40428004 0x3fc>;
 		};
 
 		gpioa: gpio@400a0000 {
