@@ -64,8 +64,13 @@
 			zephyr,memory-region = "SRAM3SAHB";
 		};
 
-		flash: flash-controller@40028000 {
-			reg = <0x40028000 DT_SIZE_K(8)>;
+		fri: syscon@40028000 {
+			compatible = "syscon";
+			reg = <0x40028000 0x2000>;
+		};
+
+		flash: flash-controller@40042000 {
+			reg = <0x40042000 DT_SIZE_K(8)>;
 			ranges;
 			interrupts = <2 0>;
 
