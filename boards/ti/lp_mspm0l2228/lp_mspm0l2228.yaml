@@ -16,4 +16,5 @@ supported:
   - vref
   - counter
   - adc
+  - dma
 vendor: ti
