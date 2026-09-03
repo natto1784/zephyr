@@ -3,18 +3,23 @@
 # Copyright (c) 2025 Linumiz
 # SPDX-License-Identifier: Apache-2.0
 
-if SOC_FAMILY_TI_MSPM
-
-rsource "*/Kconfig"
-
 # Per TRM Section 2.2.7 Peripheral Power Enable Control: wait at least 4 ULPCLK
 # clock cycles before accessing the peripheral's memory-mapped registers.
 # ULPCLK will either be equivalent or half of the main MCLK and CPUCLK,
-# yielding the delay time of 8 cycles
+# yielding the delay time of 8 cycles on mspm0/mspm33c. AM13E's peripheral
+# bus runs off a faster CPU clock (up to 200MHz vs mspm0's much lower
+# range), so the same cycle count buys much less real time there -- flagged
+# for hardware validation against the AM13 TRM's peripheral power-up timing
+# spec before trusting this default on real AM13E silicon.
 config MSPM0_PERIPH_STARTUP_DELAY
 	int
 	default 8
-	depends on SOC_SERIES_MSPM0G || SOC_SERIES_MSPM0L || SOC_SERIES_MSPM33C
+	depends on SOC_SERIES_MSPM0G || SOC_SERIES_MSPM0L || SOC_SERIES_MSPM33C || \
+		   SOC_SERIES_AM13E
+
+if SOC_FAMILY_TI_MSPM
+
+rsource "*/Kconfig"
 
 config HWINFO
 	bool
