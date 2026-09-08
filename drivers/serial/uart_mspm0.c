@@ -8,6 +8,18 @@
 
 #define DT_DRV_COMPAT ti_mspm0_uart
 
+/*
+ * AM13E's UNICOMMUART_REGS has no leading GPRCM block; every functional
+ * register (CLKDIV, CLKSEL, CTL0, ...) sits 0x1000 lower than the same
+ * register on mspm0/mspm33c. is-unicomm-uart already forces skip_power_on,
+ * so the GPRCM fields this shift underflows past are never dereferenced.
+ */
+#if defined(CONFIG_SOC_SERIES_AM13E)
+#define MSPM0_UART_REGS_OFFSET 0x1000U
+#else
+#define MSPM0_UART_REGS_OFFSET 0U
+#endif
+
 /* Zephyr includes */
 #include <zephyr/kernel.h>
 #include <zephyr/drivers/clock_control.h>
@@ -881,7 +893,7 @@ static DEVICE_API(uart, uart_mspm0_driver_api) = {
 	MSP_UART_IRQ_DEFINE(index);                                                             \
                                                                                                 \
 	static const struct uart_mspm0_config uart_mspm0_cfg_##index = {			\
-		.regs = (mspm0_uart_regs *)DT_INST_REG_ADDR(index),                             \
+		.regs = (mspm0_uart_regs *)(DT_INST_REG_ADDR(index) - MSPM0_UART_REGS_OFFSET),  \
 		.pinctrl = PINCTRL_DT_INST_DEV_CONFIG_GET(index),                               \
 		.clock_subsys = &mspm0_uart_sys_clock##index,                                   \
 		.clk_sel = MSPM0_CLOCK_PERIPH_REG_MASK(DT_INST_CLOCKS_CELL(index, clk)),        \
