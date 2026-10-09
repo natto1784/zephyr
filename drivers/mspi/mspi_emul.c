@@ -52,7 +52,7 @@ struct mspi_emul_data {
 	/* device specific hardware settings */
 	struct mspi_dev_cfg           dev_cfg;
 	/* XIP configurations */
-	struct mspi_xip_cfg           xip_cfg;
+	struct mspi_memmap_cfg         memmap_cfg;
 	/* scrambling configurations */
 	struct mspi_scramble_cfg      scramble_cfg;
 	/* Timing configurations */
